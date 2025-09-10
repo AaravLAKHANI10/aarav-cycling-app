@@ -1,2 +1,2 @@
 # aarav-cycling-app
-CycleTrack - A cycling tracking web application
+Bikester - A cycling tracking web application
