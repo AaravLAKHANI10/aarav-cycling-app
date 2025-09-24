@@ -565,10 +565,154 @@ const Dashboard = () => {
       )}
 
       {/* Goal Details Modal - Same as before */}
-      {showGoalDetails && selectedGoal && (
-        <div className="fixed z-10 inset-0 overflow-y-auto">
-          {/* Modal content remains the same */}
+{/* Goal Details Modal */}
+{showGoalDetails && selectedGoal && (
+  <div className="fixed z-10 inset-0 overflow-y-auto">
+    <div className="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+      <div className="fixed inset-0 transition-opacity" aria-hidden="true">
+        <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
+      </div>
+      <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+      
+      <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-2xl sm:w-full">
+        {/* Header */}
+        <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+          <div className="flex items-start justify-between">
+            <div className="flex items-start">
+              <div className={`flex-shrink-0 p-2 rounded-lg ${categoryColors[selectedGoal.category].light} mr-4`}>
+                <Target className={`h-6 w-6 ${categoryColors[selectedGoal.category].text}`} />
+              </div>
+              <div>
+                <h3 className="text-lg leading-6 font-medium text-gray-900">
+                  {selectedGoal.title}
+                </h3>
+                <div className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${categoryColors[selectedGoal.category].light} ${categoryColors[selectedGoal.category].text} mt-1`}>
+                  {selectedGoal.category}
+                </div>
+              </div>
+            </div>
+            <button
+              onClick={() => setShowGoalDetails(false)}
+              className="bg-white rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500"
+            >
+              <X className="h-5 w-5" />
+            </button>
+          </div>
+
+          {/* Goal Details */}
+          <div className="mt-6 space-y-6">
+            {selectedGoal.description && (
+              <div>
+                <h4 className="text-sm font-medium text-gray-900 mb-2">Description</h4>
+                <p className="text-sm text-gray-600">{selectedGoal.description}</p>
+              </div>
+            )}
+
+            {/* Progress Section */}
+            <div>
+              <div className="flex items-center justify-between mb-2">
+                <h4 className="text-sm font-medium text-gray-900">Progress</h4>
+                <span className="text-sm text-gray-500">
+                  {calculateProgress(selectedGoal.currentValue, selectedGoal.targetValue).toFixed(1)}%
+                </span>
+              </div>
+              
+              <div className="relative">
+                <div className="overflow-hidden h-4 text-xs flex rounded-full bg-gray-200">
+                  <div
+                    style={{ 
+                      width: `${calculateProgress(selectedGoal.currentValue, selectedGoal.targetValue)}%`,
+                      backgroundColor: selectedGoal.color 
+                    }}
+                    className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center transition-all duration-500"
+                  ></div>
+                </div>
+              </div>
+
+              <div className="flex justify-between mt-2 text-sm text-gray-600">
+                <span>0 {selectedGoal.unit}</span>
+                <span className="font-medium text-gray-900">
+                  {selectedGoal.currentValue} / {selectedGoal.targetValue} {selectedGoal.unit}
+                </span>
+                <span>{selectedGoal.targetValue} {selectedGoal.unit}</span>
+              </div>
+            </div>
+
+            {/* Update Progress */}
+            <div>
+              <h4 className="text-sm font-medium text-gray-900 mb-2">Update Progress</h4>
+              <div className="flex items-end space-x-3">
+                <div className="flex-1">
+                  <input
+                    type="number"
+                    step="0.01"
+                    min="0"
+                    max={selectedGoal.targetValue}
+                    value={selectedGoal.currentValue}
+                    onChange={(e) => {
+                      const newValue = parseFloat(e.target.value) || 0;
+                      updateGoalProgress(selectedGoal.id, newValue);
+                      setSelectedGoal({ ...selectedGoal, currentValue: newValue });
+                    }}
+                    className="block w-full border border-gray-300 rounded-md shadow-sm px-3 py-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    placeholder="Current progress"
+                  />
+                </div>
+                <span className="text-sm text-gray-500 pb-2">
+                  {selectedGoal.unit}
+                </span>
+              </div>
+            </div>
+
+            {/* Status */}
+            <div>
+              <h4 className="text-sm font-medium text-gray-900 mb-2">Status</h4>
+              {getGoalStatus(selectedGoal) === 'completed' && (
+                <div className="flex items-center text-green-600">
+                  <CheckCircle className="h-4 w-4 mr-2" />
+                  <span className="text-sm font-medium">Goal Completed! 🎉</span>
+                </div>
+              )}
+              {getGoalStatus(selectedGoal) === 'in-progress' && (
+                <div className="flex items-center text-blue-600">
+                  <TrendingUp className="h-4 w-4 mr-2" />
+                  <span className="text-sm font-medium">In Progress</span>
+                </div>
+              )}
+              {getGoalStatus(selectedGoal) === 'overdue' && (
+                <div className="flex items-center text-red-600">
+                  <Clock className="h-4 w-4 mr-2" />
+                  <span className="text-sm font-medium">Overdue</span>
+                </div>
+              )}
+            </div>
+          </div>
         </div>
+
+        {/* Footer */}
+        <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+          <button
+            type="button"
+            onClick={() => deleteGoal(selectedGoal.id)}
+            className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
+          >
+            <Trash2 className="h-4 w-4 mr-2" />
+            Delete Goal
+          </button>
+          <button
+            type="button"
+            onClick={() => setShowGoalDetails(false)}
+            className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+)}
+
+
       )}
     </div>
   );
