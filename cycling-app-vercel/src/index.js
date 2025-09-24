@@ -33,29 +33,9 @@ function ClerkProviderWithRoutes() {
     <ClerkProvider
       publishableKey={clerkPubKey}
       navigate={(to) => navigate(to)}
+      afterSignUpUrl="/"
+      afterSignInUrl="/"
     >
       <Routes>
         <Route path="/" element={<App />} />
-        <Route path="/sign-in/*" element={<SignInPage />} />
-        <Route path="/sign-up/*" element={<SignUpPage />} />
-        <Route
-          path="/dashboard"
-          element={
-            <ProtectedRoute>
-              <App />
-            </ProtectedRoute>
-          }
-        />
-      </Routes>
-    </ClerkProvider>
-  );
-}
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <React.StrictMode>
-    <BrowserRouter>
-      <ClerkProviderWithRoutes />
-    </BrowserRouter>
-  </React.StrictMode>
-);
