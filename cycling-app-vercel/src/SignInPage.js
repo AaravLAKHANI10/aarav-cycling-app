@@ -19,7 +19,7 @@ const SignInPage = () => {
               Goal Tracker
             </span>
           </Link>
-          <div className="w-24"></div> {/* Spacer for centering */}
+          <div className="w-24"></div>
         </div>
       </div>
 
@@ -42,11 +42,13 @@ const SignInPage = () => {
             </p>
           </div>
 
-          {/* Clerk SignIn Component */}
+          {/* Clerk SignIn Component - FIXED CONFIGURATION */}
           <div className="bg-white p-8 rounded-xl shadow-lg">
             <SignIn 
-              path="/sign-in"
               routing="path"
+              path="/sign-in"
+              redirectUrl="/"
+              afterSignInUrl="/"
               signUpUrl="/sign-up"
               appearance={{
                 elements: {
@@ -68,12 +70,6 @@ const SignInPage = () => {
                     'w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all',
                   footerActionLink: 
                     'text-indigo-600 hover:text-indigo-500 font-medium transition-colors',
-                  identityPreviewText: 'text-gray-700',
-                  identityPreviewEditButtonIcon: 'text-indigo-600',
-                  formFieldSuccessText: 'text-green-600',
-                  formFieldErrorText: 'text-red-600',
-                  alert: 'bg-red-50 border-red-200',
-                  alertText: 'text-red-800'
                 },
                 layout: {
                   socialButtonsPlacement: 'top',
@@ -103,4 +99,5 @@ const SignInPage = () => {
 };
 
 export default SignInPage;
+
 
