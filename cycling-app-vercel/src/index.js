@@ -38,4 +38,47 @@ function ClerkProviderWithRoutes() {
     >
       <Routes>
         <Route path="/" element={<App />} />
+        
+        <Route 
+          path="/sign-in/*" 
+          element={
+            <SignedOut>
+              <SignInPage />
+            </SignedOut>
+          } 
+        />
+        
+        <Route 
+          path="/sign-up/*" 
+          element={
+            <SignedOut>
+              <SignUpPage />
+            </SignedOut>
+          } 
+        />
+        
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <App />
+            </ProtectedRoute>
+          }
+        />
+        
+        <Route path="*" element={<App />} />
+      </Routes>
+    </ClerkProvider>
+  );
+}
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+  <React.StrictMode>
+    <BrowserRouter>
+      <ClerkProviderWithRoutes />
+    </BrowserRouter>
+  </React.StrictMode>
+);
+
 
