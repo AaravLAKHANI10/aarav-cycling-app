@@ -1,10 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { ClerkProvider, RedirectToSignIn, SignedIn, SignedOut } from '@clerk/clerk-react';
+import { ClerkProvider } from '@clerk/clerk-react';
 import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
 import App from './App';
 import SignInPage from './SignInPage';
 import SignUpPage from './SignUpPage';
+import SSOCallback from './SSOCallback';
 
 // Get the Publishable Key from environment variables
 const clerkPubKey = process.env.REACT_APP_CLERK_PUBLISHABLE_KEY;
@@ -21,17 +22,20 @@ function ClerkProviderWithRoutes() {
     <ClerkProvider
       publishableKey={clerkPubKey}
       navigate={(to) => navigate(to)}
+      afterSignUpUrl="/"
+      afterSignInUrl="/"
     >
       <Routes>
-        {/* Main Route - Shows landing page or dashboard based on auth status */}
+        {/* Main Route */}
         <Route path="/" element={<App />} />
         
-        {/* Auth Routes - Allow Clerk to handle all auth callbacks */}
+        {/* Auth Routes */}
         <Route path="/sign-in/*" element={<SignInPage />} />
         <Route path="/sign-up/*" element={<SignUpPage />} />
         
-        {/* Dashboard Route (optional, App handles this already) */}
-        <Route path="/dashboard" element={<App />} />
+        {/* SSO Callback Routes */}
+        <Route path="/sign-up/sso-callback" element={<SSOCallback />} />
+        <Route path="/sign-in/sso-callback" element={<SSOCallback />} />
         
         {/* Catch all */}
         <Route path="*" element={<App />} />
