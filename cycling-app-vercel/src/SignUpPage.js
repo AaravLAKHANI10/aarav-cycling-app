@@ -1,9 +1,18 @@
-import React from 'react';
-import { SignUp } from '@clerk/clerk-react';
-import { Link } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { SignUp, useUser } from '@clerk/clerk-react';
+import { Link, useNavigate } from 'react-router-dom';
 import { Target, ArrowLeft } from 'lucide-react';
 
 const SignUpPage = () => {
+  const { isSignedIn, isLoaded } = useUser();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isLoaded && isSignedIn) {
+      navigate('/');
+    }
+  }, [isSignedIn, isLoaded, navigate]);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50">
       {/* Header */}
@@ -47,8 +56,6 @@ const SignUpPage = () => {
             <SignUp 
               routing="path"
               path="/sign-up"
-              redirectUrl="/"
-              afterSignUpUrl="/"
               signInUrl="/sign-in"
               appearance={{
                 elements: {
@@ -99,4 +106,5 @@ const SignUpPage = () => {
 };
 
 export default SignUpPage;
+
 
