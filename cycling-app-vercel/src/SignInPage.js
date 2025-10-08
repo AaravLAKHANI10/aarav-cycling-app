@@ -1,9 +1,9 @@
 import React from 'react';
-import { SignIn } from '@clerk/clerk-react';
+import { SignUp } from '@clerk/clerk-react';
 import { Link } from 'react-router-dom';
 import { Target, ArrowLeft } from 'lucide-react';
 
-const SignInPage = () => {
+const SignUpPage = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50">
       {/* Header */}
@@ -23,7 +23,7 @@ const SignInPage = () => {
         </div>
       </div>
 
-      {/* Sign In Form Container */}
+      {/* Sign Up Form Container */}
       <div className="flex items-center justify-center min-h-screen py-12 px-4 sm:px-6 lg:px-8">
         <div className="w-full max-w-md">
           {/* Welcome Message */}
@@ -32,24 +32,24 @@ const SignInPage = () => {
               <Target className="h-10 w-10 text-white" />
             </div>
             <h2 className="text-3xl font-extrabold text-gray-900">
-              Welcome back!
+              Create your account
             </h2>
             <p className="mt-2 text-sm text-gray-600">
-              Don't have an account?{' '}
-              <Link to="/sign-up" className="font-medium text-indigo-600 hover:text-indigo-500 transition-colors">
-                Sign up for free
+              Already have an account?{' '}
+              <Link to="/sign-in" className="font-medium text-indigo-600 hover:text-indigo-500 transition-colors">
+                Sign in here
               </Link>
             </p>
           </div>
 
-          {/* Clerk SignIn Component - FIXED CONFIGURATION */}
+          {/* Clerk SignUp Component */}
           <div className="bg-white p-8 rounded-xl shadow-lg">
-            <SignIn 
+            <SignUp 
               routing="path"
-              path="/sign-in"
+              path="/sign-up"
               redirectUrl="/"
-              afterSignInUrl="/"
-              signUpUrl="/sign-up"
+              afterSignUpUrl="/"
+              signInUrl="/sign-in"
               appearance={{
                 elements: {
                   rootBox: 'mx-auto',
@@ -82,7 +82,7 @@ const SignInPage = () => {
           {/* Additional Links */}
           <div className="mt-6 text-center text-sm text-gray-600">
             <p>
-              By signing in, you agree to our{' '}
+              By signing up, you agree to our{' '}
               <a href="#" className="text-indigo-600 hover:text-indigo-500">
                 Terms of Service
               </a>{' '}
@@ -98,6 +98,6 @@ const SignInPage = () => {
   );
 };
 
-export default SignInPage;
+export default SignUpPage;
 
 
