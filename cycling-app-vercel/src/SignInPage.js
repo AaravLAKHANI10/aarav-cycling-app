@@ -4,14 +4,14 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Target, ArrowLeft } from 'lucide-react';
 
 const SignInPage = () => {
-  const { isSignedIn } = useUser();
+  const { isSignedIn, isLoaded } = useUser();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (isSignedIn) {
+    if (isLoaded && isSignedIn) {
       navigate('/');
     }
-  }, [isSignedIn, navigate]);
+  }, [isSignedIn, isLoaded, navigate]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50">
