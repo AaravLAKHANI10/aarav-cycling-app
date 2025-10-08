@@ -13,18 +13,6 @@ if (!clerkPubKey) {
   throw new Error('Missing Publishable Key. Please set REACT_APP_CLERK_PUBLISHABLE_KEY in your .env.local file');
 }
 
-// Protected Route Component
-function ProtectedRoute({ children }) {
-  return (
-    <>
-      <SignedIn>{children}</SignedIn>
-      <SignedOut>
-        <RedirectToSignIn />
-      </SignedOut>
-    </>
-  );
-}
-
 // Clerk Provider with Router
 function ClerkProviderWithRoutes() {
   const navigate = useNavigate();
@@ -33,39 +21,19 @@ function ClerkProviderWithRoutes() {
     <ClerkProvider
       publishableKey={clerkPubKey}
       navigate={(to) => navigate(to)}
-      afterSignUpUrl="/"
-      afterSignInUrl="/"
     >
       <Routes>
+        {/* Main Route - Shows landing page or dashboard based on auth status */}
         <Route path="/" element={<App />} />
         
-        <Route 
-          path="/sign-in/*" 
-          element={
-            <SignedOut>
-              <SignInPage />
-            </SignedOut>
-          } 
-        />
+        {/* Auth Routes - Allow Clerk to handle all auth callbacks */}
+        <Route path="/sign-in/*" element={<SignInPage />} />
+        <Route path="/sign-up/*" element={<SignUpPage />} />
         
-        <Route 
-          path="/sign-up/*" 
-          element={
-            <SignedOut>
-              <SignUpPage />
-            </SignedOut>
-          } 
-        />
+        {/* Dashboard Route (optional, App handles this already) */}
+        <Route path="/dashboard" element={<App />} />
         
-        <Route
-          path="/dashboard"
-          element={
-            <ProtectedRoute>
-              <App />
-            </ProtectedRoute>
-          }
-        />
-        
+        {/* Catch all */}
         <Route path="*" element={<App />} />
       </Routes>
     </ClerkProvider>
@@ -80,5 +48,4 @@ root.render(
     </BrowserRouter>
   </React.StrictMode>
 );
-
 
