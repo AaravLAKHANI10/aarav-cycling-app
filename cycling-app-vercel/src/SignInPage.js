@@ -1,9 +1,18 @@
-import React from 'react';
-import { SignIn } from '@clerk/clerk-react';
-import { Link } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { SignIn, useUser } from '@clerk/clerk-react';
+import { Link, useNavigate } from 'react-router-dom';
 import { Target, ArrowLeft } from 'lucide-react';
 
 const SignInPage = () => {
+  const { isSignedIn } = useUser();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isSignedIn) {
+      navigate('/');
+    }
+  }, [isSignedIn, navigate]);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50">
       {/* Header */}
@@ -42,13 +51,11 @@ const SignInPage = () => {
             </p>
           </div>
 
-          {/* Clerk SignIn Component - FIXED CONFIGURATION */}
+          {/* Clerk SignIn Component */}
           <div className="bg-white p-8 rounded-xl shadow-lg">
             <SignIn 
               routing="path"
               path="/sign-in"
-              redirectUrl="/"
-              afterSignInUrl="/"
               signUpUrl="/sign-up"
               appearance={{
                 elements: {
@@ -99,4 +106,5 @@ const SignInPage = () => {
 };
 
 export default SignInPage;
+
 
